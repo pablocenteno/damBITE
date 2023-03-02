@@ -14,50 +14,31 @@ import com.squareup.picasso.Picasso
 
 class FavoritosRVAdapter (
 
-    var listaPlatos: MutableList<Plato>,
-    private val perfilPlato: (Plato) -> Unit,
-    private val anadirFavorito: (Plato) -> Unit
+
     ):RecyclerView.Adapter<FavoritoViewHolder>()
     {
-
-        //Definimos su metedo create estableciendo su layout
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritoViewHolder {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            return FavoritoViewHolder(layoutInflater.inflate(R.layout.favorito_rvitem, parent, false))
+            TODO("Not yet implemented")
         }
 
-        //Renederizamos cada elemento de la lista
         override fun onBindViewHolder(holder: FavoritoViewHolder, position: Int) {
-            val item = listaPlatos[position]
-            holder.render(item,perfilPlato,anadirFavorito)
+            TODO("Not yet implemented")
         }
 
-        //Obtenemos el tamaño de la lista
         override fun getItemCount(): Int {
-            return listaPlatos.size
-
+            TODO("Not yet implemented")
         }
+
     }
 
 
     class FavoritoViewHolder(view: View
     ) : RecyclerView.ViewHolder(view) {
 
-        val imageView = view.findViewById<ImageView>(R.id.imgVPlato)
-        val textView = view.findViewById<TextView>(R.id.tvnombrePlato)
-        val btnFavorito = view.findViewById<Button>(R.id.btnFavorito)
+
         fun render(
-            plato: Plato,
-            onClickPerfil: (Plato) -> Unit,
-            onClickFavorito: (Plato) -> Unit
+
         ) {
-            itemView.setOnClickListener { onClickPerfil(plato) }
-            btnFavorito.setOnClickListener { onClickFavorito(plato) }
-
-            textView.text = plato.nombre
-
-            Picasso.with(imageView.context).load(plato.urlImagen)
-                .fit().centerCrop().into(imageView)
 
 
         }

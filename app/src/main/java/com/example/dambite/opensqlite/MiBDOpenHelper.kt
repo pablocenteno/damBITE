@@ -67,13 +67,6 @@ class MiBDOpenHelper(contex: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     }
 
-    fun eliminarPlatoFavorito(id_plato: String): Boolean {
-
-        val db = this.writableDatabase
-        val resultado = db.delete(TABLA_PLATOS, "$PLATOS_C_ID_ = ?", arrayOf(id_plato))
-        db.close()
-        return resultado != -1
-    }
 
     @SuppressLint("Range")
     fun obtenerPlatos(): ArrayList<Plato> {
@@ -97,25 +90,7 @@ class MiBDOpenHelper(contex: Context, factory: SQLiteDatabase.CursorFactory?) :
         return platos
     }
 
-    fun insertarPlatoFavorito(
-        id: String,
-        nombre: String,
-        categoria: String,
-        area: String,
-        urlImagen: String
-    ) {
-        val db = this.writableDatabase
 
-        val data = ContentValues()
-        data.put(PLATOS_C_ID_, id)
-        data.put(PLATOS_C_NOMBRE, nombre)
-        data.put(PLATOS_C_CATEGORIA, categoria)
-        data.put(PLATOS_C_AREA, area)
-        data.put(PLATOS_C_IMAGEN, urlImagen)
-
-        db.insert(TABLA_PLATOS, null, data)
-        db.close()
-    }
 
 
 }

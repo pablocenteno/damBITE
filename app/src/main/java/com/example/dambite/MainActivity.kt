@@ -28,7 +28,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         miBDOpenHelper = MiBDOpenHelper(this, null)
         favoritosViewModel.setDBHelper(miBDOpenHelper)
-        favoritosViewModel.modificarLista(miBDOpenHelper.obtenerPlatos())
+
+        //Descomentar cuando se reaice el método
+        //favoritosViewModel.modificarLista(miBDOpenHelper.obtenerPlatos())
 
     }
 

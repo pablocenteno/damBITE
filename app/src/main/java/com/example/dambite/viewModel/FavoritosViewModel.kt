@@ -21,43 +21,8 @@ class FavoritosViewModel : ViewModel() {
     }
 
 
-    fun modificarLista(listaPlatos: MutableList<Plato>) {
-        listaPlatosFavoritos.value = listaPlatos
-    }
-
-    fun obtenerLista(): MutableList<Plato> {
-
-        return listaPlatosFavoritos.value!!
-    }
 
 
-    fun anadirFavorito(favorito: Plato): Boolean {
-
-        for (plato in listaPlatosFavoritos.value!!) {
-            if (plato.id == favorito.id) return false
-        }
-
-        dbHelper!!.insertarPlatoFavorito(
-            favorito.id, favorito.nombre, favorito.categoria, favorito.area, favorito.urlImagen
-        )
-        listaPlatosFavoritos?.value?.add(favorito)
-
-        return true;
-
-    }
-
-    fun eliminarFavorito(favorito: Plato): Boolean {
-
-        for (plato in listaPlatosFavoritos.value!!) {
-            if (plato.id.compareTo(favorito.id) == 0) {
-                dbHelper!!.eliminarPlatoFavorito(favorito.id)
-                listaPlatosFavoritos?.value?.remove(favorito)
-
-                return true
-            }
-        }
-        return false;
-    }
 
 
 }

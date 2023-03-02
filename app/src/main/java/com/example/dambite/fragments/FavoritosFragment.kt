@@ -17,7 +17,6 @@ import com.example.dambite.viewModel.FavoritosViewModel
 class FavoritosFragment : Fragment() {
 
     private var binding: FragmentFavoritosBinding? = null
-    private val favoritosViewModel: FavoritosViewModel by activityViewModels()
 
     private lateinit var favoritosAdapter: FavoritosRVAdapter
 
@@ -31,19 +30,7 @@ class FavoritosFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentFavoritosBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        initRecyclerView()
         return fragmentBinding.root
-    }
-
-    fun initRecyclerView() {
-        //Declaramos el adapatador del recyclerview
-        favoritosAdapter = FavoritosRVAdapter(listaPlatos = favoritosViewModel.obtenerLista(),
-            perfilPlato = { plato -> perfilPlato(plato) },
-            anadirFavorito = { plato -> eliminarFavorito(plato) })
-        //Establecemos su layoutmanager y el adaptador
-        binding!!.listaFavoritosRV.layoutManager = LinearLayoutManager(requireContext())
-        binding!!.listaFavoritosRV.adapter = favoritosAdapter
-
     }
 
 
@@ -63,22 +50,5 @@ class FavoritosFragment : Fragment() {
         fragmentTransaction.commit()
     }
 
-    fun eliminarFavorito(plato: Plato) {
 
-        if (favoritosViewModel.eliminarFavorito(plato)) {
-            binding!!.listaFavoritosRV.adapter!!.notifyDataSetChanged()
-            Toast.makeText(
-                requireContext(),
-                " ${plato.nombre} ha sido eliminado de favoritos",
-                Toast.LENGTH_LONG
-            ).show()
-        }else{
-            Toast.makeText(
-                requireContext(),
-                " ${plato.nombre} no ha sido eliminado de favoritos",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
-    }
 }

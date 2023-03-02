@@ -6,27 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.dambite.R
+import com.example.dambite.databinding.FragmentFavoritosBinding
 import com.example.dambite.databinding.FragmentInicioBinding
 
 class InicioFragment : Fragment() {
-
 
     private var binding: FragmentInicioBinding? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
+
         val fragmentBinding = FragmentInicioBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+
+        // Inflate the layout for this fragment
 
         fragmentBinding.btnBuscar.setOnClickListener {
 

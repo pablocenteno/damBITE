@@ -25,9 +25,6 @@ import retrofit2.Response
 class ListaPlatosFragment : Fragment() {
 
     private var binding: FragmentListaPlatosBinding? = null
-    private val favoritosViewModel: FavoritosViewModel by activityViewModels()
-
-
     private var listaPlatos: List<PlatoResponse> = mutableListOf<PlatoResponse>()
     private lateinit var listaPlatosAdapter: PlatoRVAdapter
 
@@ -39,13 +36,9 @@ class ListaPlatosFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-
         val fragmentBinding = FragmentListaPlatosBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         initRecyclerView()
-
-        binding!!.btnBuscar.setOnClickListener { obtenerPlatos() }
-        obtenerPlatos()
         return fragmentBinding.root
     }
 
@@ -57,7 +50,6 @@ class ListaPlatosFragment : Fragment() {
         //Establecemos su layoutmanager y el adaptador
         binding!!.listaPlatosRV.layoutManager = LinearLayoutManager(requireContext())
         binding!!.listaPlatosRV.adapter = listaPlatosAdapter
-
     }
 
     fun perfilPlato(plato: PlatoResponse) {
@@ -77,58 +69,11 @@ class ListaPlatosFragment : Fragment() {
     }
 
     fun anadirFavorito(plato: PlatoResponse) {
-
-        var favorito = Plato(
-            plato.id,
-            plato.nombre,
-            plato.categoria,
-            plato.area,
-            plato.urlImagen
-        )
-
-        if (favoritosViewModel.anadirFavorito(favorito)) {
-            binding!!.listaPlatosRV.adapter!!.notifyDataSetChanged()
-
-            Toast.makeText(
-                requireContext(), " ${plato.nombre}  añadido a favoritos", Toast.LENGTH_LONG
-            ).show()
-        }else{
-            Toast.makeText(
-                requireContext(), " ${plato.nombre}  ya esta añadido a favoritos", Toast.LENGTH_LONG
-            ).show()
-        }
+        //Rellena codigo
     }
 
 
-    fun obtenerPlatos() {
-        var texto = binding!!.tvBuscar.text
 
-        RetrofitInstance.api.getPlatos("/api/json/v1/1/search.php?s=$texto")
-            .enqueue(object : Callback<ListaDePlatosResponse> {
-                override fun onResponse(
-                    call: Call<ListaDePlatosResponse>, response: Response<ListaDePlatosResponse>
-                ) {
-                    if (response.body()!!.meals != null) {
-                        listaPlatos = response!!.body()!!.meals
-                        listaPlatosAdapter.listaPlatos = listaPlatos
-                        listaPlatosAdapter.notifyDataSetChanged()
-                    } else {
-
-                        listaPlatosAdapter.listaPlatos = mutableListOf<PlatoResponse>()
-                        listaPlatosAdapter.notifyDataSetChanged()
-                        Toast.makeText(
-                            requireContext(), " No existen platos con este nombre $texto ", Toast.LENGTH_LONG
-                        ).show()
-                        return
-                    }
-                }
-
-                override fun onFailure(call: Call<ListaDePlatosResponse>, t: Throwable) {
-                    Log.d("TAG", t.message.toString())
-                }
-            })
-
-    }
 
 
 }
