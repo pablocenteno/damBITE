@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.dambite.opensqlite.MiBDOpenHelper
-import com.example.dambite.viewModel.PlatosViewModel
+import com.example.dambite.viewModel.FavoritosViewModel
 import androidx.activity.viewModels
 
 
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var miBDOpenHelper : MiBDOpenHelper
 
-    private val favoritosViewModel : PlatosViewModel by viewModels()
+    private val favoritosViewModel : FavoritosViewModel by viewModels()
 
     companion object {
         @SuppressLint("StaticFieldLeak")

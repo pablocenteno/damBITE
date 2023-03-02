@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.example.dambite.R
-import com.example.dambite.databinding.FragmentListaPlatosBinding
 import com.example.dambite.databinding.FragmentPerfilPlatoBinding
 import com.example.dambite.rest.ListaDePlatosResponse
 import com.example.dambite.rest.PlatoResponse
 import com.example.dambite.rest.RetrofitInstance
-import com.example.dambite.viewModel.PlatosViewModel
+import com.example.dambite.viewModel.FavoritosViewModel
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +24,8 @@ class PerfilPlatoFragment : Fragment() {
 
     private var plato: PlatoResponse? = null
     private var idPlato: String? = null
+    private val favoritosViewModel: FavoritosViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +83,19 @@ class PerfilPlatoFragment : Fragment() {
         binding!!.tvTags.text = "Etiquetas: " + plato?.etiquetas
         Picasso.with(binding!!.ivPlato.context).load(plato?.urlImagen)
             .fit().centerCrop().into(binding!!.ivPlato)
+        comprobarEsFavortio(plato)
+    }
+
+
+    fun comprobarEsFavortio(plato:PlatoResponse?){
+
+        for (p in favoritosViewModel.obtenerLista()){
+            if (p.id.compareTo(plato!!.id) ==0){
+                binding!!.btnFavorito.text="Unlike"
+                return
+            }
+        }
+        binding!!.btnFavorito.text="Like"
 
     }
 

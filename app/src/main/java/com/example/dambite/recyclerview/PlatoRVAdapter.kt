@@ -7,8 +7,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.example.dambite.MainActivity
 import com.example.dambite.R
-import com.example.dambite.entity.Plato
 import com.example.dambite.rest.PlatoResponse
 import com.squareup.picasso.Picasso
 
@@ -16,7 +17,7 @@ class PlatoRVAdapter (
 
     var listaPlatos: List<PlatoResponse>,
     private val perfilPlato: (PlatoResponse) -> Unit,
-    private val anadirFavorito: (PlatoResponse) -> Unit
+    private val anadirFavorito: (PlatoResponse) -> Unit,
     ):RecyclerView.Adapter<PlatoViewHolder>()
     {
 
@@ -56,7 +57,14 @@ class PlatoRVAdapter (
 
             textView.text = plato.nombre
 
+            val circularProgressDrawable = CircularProgressDrawable(MainActivity.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+
+
             Picasso.with(imageView.context).load(plato.urlImagen)
+                .placeholder(circularProgressDrawable)
                 .fit().centerCrop().into(imageView)
 
 

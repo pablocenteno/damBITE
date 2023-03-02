@@ -12,12 +12,12 @@ import com.example.dambite.R
 import com.example.dambite.databinding.FragmentFavoritosBinding
 import com.example.dambite.entity.Plato
 import com.example.dambite.recyclerview.FavoritosRVAdapter
-import com.example.dambite.viewModel.PlatosViewModel
+import com.example.dambite.viewModel.FavoritosViewModel
 
 class FavoritosFragment : Fragment() {
 
     private var binding: FragmentFavoritosBinding? = null
-    private val favoritosViewModel: PlatosViewModel by activityViewModels()
+    private val favoritosViewModel: FavoritosViewModel by activityViewModels()
 
     private lateinit var favoritosAdapter: FavoritosRVAdapter
 

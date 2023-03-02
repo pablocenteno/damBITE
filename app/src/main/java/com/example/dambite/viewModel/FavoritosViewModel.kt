@@ -1,13 +1,12 @@
 package com.example.dambite.viewModel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dambite.MainActivity
 import com.example.dambite.entity.Plato
 import com.example.dambite.opensqlite.MiBDOpenHelper
 
-class PlatosViewModel : ViewModel() {
+class FavoritosViewModel : ViewModel() {
 
     private var dbHelper = MiBDOpenHelper(MainActivity.context, null)
 

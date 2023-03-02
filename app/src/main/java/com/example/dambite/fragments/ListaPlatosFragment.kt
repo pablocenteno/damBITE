@@ -16,7 +16,7 @@ import com.example.dambite.recyclerview.PlatoRVAdapter
 import com.example.dambite.rest.ListaDePlatosResponse
 import com.example.dambite.rest.PlatoResponse
 import com.example.dambite.rest.RetrofitInstance
-import com.example.dambite.viewModel.PlatosViewModel
+import com.example.dambite.viewModel.FavoritosViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +25,7 @@ import retrofit2.Response
 class ListaPlatosFragment : Fragment() {
 
     private var binding: FragmentListaPlatosBinding? = null
-    private val favoritosViewModel: PlatosViewModel by activityViewModels()
+    private val favoritosViewModel: FavoritosViewModel by activityViewModels()
 
 
     private var listaPlatos: List<PlatoResponse> = mutableListOf<PlatoResponse>()
@@ -103,17 +103,22 @@ class ListaPlatosFragment : Fragment() {
     fun obtenerPlatos() {
         var texto = binding!!.tvBuscar.text
 
-
         RetrofitInstance.api.getPlatos("/api/json/v1/1/search.php?s=$texto")
             .enqueue(object : Callback<ListaDePlatosResponse> {
                 override fun onResponse(
                     call: Call<ListaDePlatosResponse>, response: Response<ListaDePlatosResponse>
                 ) {
-                    if (response.body() != null) {
+                    if (response.body()!!.meals != null) {
                         listaPlatos = response!!.body()!!.meals
                         listaPlatosAdapter.listaPlatos = listaPlatos
                         listaPlatosAdapter.notifyDataSetChanged()
                     } else {
+
+                        listaPlatosAdapter.listaPlatos = mutableListOf<PlatoResponse>()
+                        listaPlatosAdapter.notifyDataSetChanged()
+                        Toast.makeText(
+                            requireContext(), " No existen platos con este nombre $texto ", Toast.LENGTH_LONG
+                        ).show()
                         return
                     }
                 }
