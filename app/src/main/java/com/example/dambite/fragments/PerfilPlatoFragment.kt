@@ -1,4 +1,4 @@
-package com.example.dambite.fragments
+package com.example.dambite.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.nio.file.Paths.get
 
 
 class PerfilPlatoFragment : Fragment() {
@@ -40,9 +41,36 @@ class PerfilPlatoFragment : Fragment() {
             // Recuperar el valor de la cadena del Bundle
             idPlato = bundle.getString("idPlato")
         }
+        mostrarDatos()
         return fragmentBinding.root
     }
 
+    fun mostrarDatos(){
+        RetrofitInstance.api.getUnPlato("/api/json/v1/1/lookup.php?i=$idPlato").enqueue(object:Callback<ListaDePlatosResponse>{
+            override fun onResponse(
+                call: Call<ListaDePlatosResponse>,
+                response: Response<ListaDePlatosResponse>
+            ) {
+                if(response.body()!=null){
+
+                    binding?.textCategoriaPlato!!.text= response.body()!!.meals.get(0).categoria
+                    Picasso.get().load(response.body()!!.meals.get(0).urlImagen).into(binding!!.ivPlato)
+                    binding?.textArea!!.text= response.body()!!.meals.get(0).area
+                    binding?.tvDescripcion!!.text= response.body()!!.meals.get(0).instrucciones
+                    binding?.tvTags!!.text= response.body()!!.meals.get(0).etiquetas
+
+
+                }
+            }
+
+            override fun onFailure(call: Call<ListaDePlatosResponse>, t: Throwable) {
+                Log.d("TAG", t.message.toString())
+            }
+
+
+    })
+
+}
 
 
 

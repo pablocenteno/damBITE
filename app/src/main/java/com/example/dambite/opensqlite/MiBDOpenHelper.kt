@@ -89,6 +89,26 @@ class MiBDOpenHelper(contex: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
         return platos
     }
+    fun anadirFavorito(plato: Plato){
+
+        val db = this.writableDatabase
+        val data = ContentValues()
+        data.put(PLATOS_C_ID_, plato.id)
+        data.put(PLATOS_C_NOMBRE, plato.nombre)
+        data.put(PLATOS_C_CATEGORIA, plato.categoria)
+        data.put(PLATOS_C_AREA, plato.area)
+        data.put(PLATOS_C_IMAGEN, plato.urlImagen)
+
+        db.insert(TABLA_PLATOS, null, data)
+        db.close()
+    }
+
+    fun eliminarFavorito(plato:Plato){
+       val db = this.readableDatabase
+
+        var delete = "DELETE FROM ${MiBDOpenHelper.TABLA_PLATOS} WHERE $PLATOS_C_ID_=${plato.id}"
+        db!!.execSQL(delete)
+    }
 
 
 

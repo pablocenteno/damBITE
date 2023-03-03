@@ -11,12 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dambite.R
 import com.example.dambite.databinding.FragmentFavoritosBinding
 import com.example.dambite.entity.Plato
+import com.example.dambite.fragment.PerfilPlatoFragment
+import com.example.dambite.opensqlite.MiBDOpenHelper
 import com.example.dambite.recyclerview.FavoritosRVAdapter
 import com.example.dambite.viewModel.FavoritosViewModel
 
 class FavoritosFragment : Fragment() {
 
     private var binding: FragmentFavoritosBinding? = null
+    val favoritosVM: FavoritosViewModel by activityViewModels()
+    private var bd:MiBDOpenHelper?=null
 
     private lateinit var favoritosAdapter: FavoritosRVAdapter
 
@@ -30,6 +34,7 @@ class FavoritosFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentFavoritosBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        initRecyclerView()
         return fragmentBinding.root
     }
 
@@ -48,6 +53,23 @@ class FavoritosFragment : Fragment() {
         fragmentTransaction.addToBackStack(null)
 
         fragmentTransaction.commit()
+    }
+    fun initRecyclerView(){
+
+        val recyclerView = binding?.listaFavoritosRV
+        recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+
+        favoritosAdapter= FavoritosRVAdapter()
+        favoritosAdapter.FavoritosRVAdapter(requireContext(),favoritosVM.listaPlatosFavoritos )
+        recyclerView?.adapter=favoritosAdapter
+
+    }
+
+    fun eliminarDeFavoritos(plato: Plato){
+
+        favoritosVM.listaPlatosFavoritos.value?.remove(plato)
+
+        bd?.eliminarFavorito(plato)
     }
 
 

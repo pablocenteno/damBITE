@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dambite.R
 import com.example.dambite.databinding.FragmentListaPlatosBinding
 import com.example.dambite.entity.Plato
+import com.example.dambite.fragment.PerfilPlatoFragment
+import com.example.dambite.opensqlite.MiBDOpenHelper
 import com.example.dambite.recyclerview.PlatoRVAdapter
 import com.example.dambite.rest.ListaDePlatosResponse
 import com.example.dambite.rest.PlatoResponse
@@ -27,9 +29,12 @@ class ListaPlatosFragment : Fragment() {
     private var binding: FragmentListaPlatosBinding? = null
     private var listaPlatos: List<PlatoResponse> = mutableListOf<PlatoResponse>()
     private lateinit var listaPlatosAdapter: PlatoRVAdapter
+    private var bd: MiBDOpenHelper? = null
+    val favorito: FavoritosViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
     }
 
@@ -38,18 +43,38 @@ class ListaPlatosFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentListaPlatosBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        initRecyclerView()
+
+       initRecyclerView()
         return fragmentBinding.root
+
     }
 
     fun initRecyclerView() {
-        //Declaramos el adapatador del recyclerview
-        listaPlatosAdapter = PlatoRVAdapter(listaPlatos = listaPlatos,
-            perfilPlato = { plato -> perfilPlato(plato) },
-            anadirFavorito = { plato -> anadirFavorito(plato) })
-        //Establecemos su layoutmanager y el adaptador
-        binding!!.listaPlatosRV.layoutManager = LinearLayoutManager(requireContext())
-        binding!!.listaPlatosRV.adapter = listaPlatosAdapter
+
+        RetrofitInstance.api.getPlato("/api/json/v1/1/search.php?s=${binding!!.tvBuscar.text}").enqueue(object :Callback<ListaDePlatosResponse>{
+            override fun onResponse(
+                call: Call<ListaDePlatosResponse>,
+                response: Response<ListaDePlatosResponse>
+            ) {
+                if(response.body()!=null){
+                    listaPlatos= response.body()!!.meals
+                    //Declaramos el adapatador del recyclerview
+                    listaPlatosAdapter = PlatoRVAdapter(listaPlatos = listaPlatos,
+                        perfilPlato = { plato -> perfilPlato(plato) },
+                        anadirFavorito = { plato -> anadirFavorito(plato) })
+                    //Establecemos su layoutmanager y el adaptador
+                    binding!!.listaPlatosRV.layoutManager = LinearLayoutManager(requireContext())
+                    binding!!.listaPlatosRV.adapter = listaPlatosAdapter
+
+
+                }
+            }
+
+            override fun onFailure(call: Call<ListaDePlatosResponse>, t: Throwable) {
+                Log.d("TAG", t.message.toString())
+            }
+
+        })
     }
 
     fun perfilPlato(plato: PlatoResponse) {
@@ -69,7 +94,18 @@ class ListaPlatosFragment : Fragment() {
     }
 
     fun anadirFavorito(plato: PlatoResponse) {
+
+        var platillo = Plato(plato.id,plato.nombre, plato.categoria, plato.area,plato.urlImagen)
+
+        favorito.listaPlatosFavoritos.value?.add(platillo)
+
+        bd?.anadirFavorito(platillo)
+
         //Rellena codigo
+
+
+
+
     }
 
 

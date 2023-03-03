@@ -63,9 +63,10 @@ class PlatoRVAdapter (
             circularProgressDrawable.start()
 
 
-            Picasso.with(imageView.context).load(plato.urlImagen)
+            Picasso.get().load(plato.urlImagen)
                 .placeholder(circularProgressDrawable)
                 .fit().centerCrop().into(imageView)
+
 
 
         }
